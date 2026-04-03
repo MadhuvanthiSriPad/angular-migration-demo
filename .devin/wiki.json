@@ -1,16 +1,19 @@
 {
   "repo_notes": [
     {
-      "content": ""
+      "content": "",
+      "author": null
     }
   ],
   "pages": [
     {
       "title": "RetailConnect — Project Overview",
-      "purpose": "High-level introduction to the RetailConnect Angular 14 store management portal: what it does, its tech stack, how to run it locally, and the Angular 14→18 migration goals. Links to child pages for architecture and setup details.",
+      "purpose": "High-level introduction to the RetailConnect Angular 14 store management portal: what it does, its tech stack, how to run it locally. Links to child pages for architecture and setup details.",
+      "parent": null,
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -20,16 +23,19 @@
       "parent": "RetailConnect — Project Overview",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
     {
       "title": "Application Architecture",
       "purpose": "Overview of the NgModule-based architecture: AppModule bootstrap, lazy-loaded feature modules, CoreModule singleton pattern, SharedModule aggregation, and the overall directory layout. Links to child pages for each architectural layer.",
+      "parent": null,
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -39,7 +45,8 @@
       "parent": "Application Architecture",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -49,7 +56,8 @@
       "parent": "Application Architecture",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -59,7 +67,8 @@
       "parent": "Application Architecture",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -69,7 +78,8 @@
       "parent": "Application Architecture",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -79,16 +89,19 @@
       "parent": "Application Architecture",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
     {
       "title": "Feature Modules",
       "purpose": "Overview of the four lazy-loaded feature areas (Dashboard, Products, Orders, Customers) and the Auth feature. Summarizes each module's purpose and links to child pages for detailed coverage.",
+      "parent": null,
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -98,7 +111,8 @@
       "parent": "Feature Modules",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -108,7 +122,8 @@
       "parent": "Feature Modules",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -118,7 +133,8 @@
       "parent": "Feature Modules",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -128,7 +144,8 @@
       "parent": "Feature Modules",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -138,16 +155,19 @@
       "parent": "Feature Modules",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
     {
       "title": "Data Layer & State Management",
       "purpose": "Overview of how the application manages state without a backend: the BehaviorSubject pattern used across all services, localStorage persistence via StorageService, mock data seeds, and the storage key naming convention (rc_*). Links to child pages for service-specific details.",
+      "parent": null,
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -157,7 +177,8 @@
       "parent": "Data Layer & State Management",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -167,16 +188,19 @@
       "parent": "Data Layer & State Management",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
     {
       "title": "Styling System",
       "purpose": "Overview of the application's SCSS architecture: global styles entry point, the retail-theme Angular Material configuration, and the material-overrides partial. Links to child pages for theme details and component-level styles.",
+      "parent": null,
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -186,7 +210,8 @@
       "parent": "Styling System",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
@@ -196,25 +221,30 @@
       "parent": "Styling System",
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
     {
       "title": "Testing",
       "purpose": "Documents the testing infrastructure and patterns used in the project: Karma/Jasmine setup (karma.conf.js, src/test.ts), the single existing spec file (ProductListComponent), TestBed configuration patterns, jasmine.SpyObj usage for service mocking, and the migration target of Jest. Covers tsconfig.spec.json and polyfills.",
+      "parent": null,
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     },
     {
       "title": "Glossary",
       "purpose": "Definitions of all codebase-specific terms, Angular/RxJS jargon, abbreviations, and domain concepts that an onboarding engineer needs to know. Each entry includes a code pointer.",
+      "parent": null,
       "page_notes": [
         {
-          "content": ""
+          "content": "",
+          "author": null
         }
       ]
     }
