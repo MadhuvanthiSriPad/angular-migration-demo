@@ -1,0 +1,57 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$retail-primary: mat.define-palette(mat.$indigo-palette);
+$retail-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
+$retail-warn: mat.define-palette(mat.$red-palette);
+
+$retail-theme: mat.define-light-theme((
+  color: (
+    primary: $retail-primary,
+    accent: $retail-accent,
+    warn: $retail-warn,
+  )
+));
+
+@include mat.all-component-themes($retail-theme);
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background-color: #f5f5f5;
+}
+
+.page-container {
+  padding: 24px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-card + .mat-card {
+  margin-top: 16px;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &.active    { background-color: #e8f5e9; color: #2e7d32; }
+  &.inactive  { background-color: #fce4ec; color: #c62828; }
+  &.pending   { background-color: #fff3e0; color: #e65100; }
+  &.completed { background-color: #e3f2fd; color: #1565c0; }
+  &.cancelled { background-color: #f3e5f5; color: #6a1b9a; }
+}

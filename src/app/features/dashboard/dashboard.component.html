@@ -1,0 +1,99 @@
+<div class="page-container">
+  <h1 class="section-title">Dashboard</h1>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="48"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <!-- KPI Cards -->
+    <div class="stats-grid">
+      <app-stat-card
+        label="Total Revenue"
+        [value]="stats.totalRevenue | currency"
+        icon="attach_money"
+        [trend]="12"
+        color="primary">
+      </app-stat-card>
+      <app-stat-card
+        label="Active Customers"
+        [value]="stats.activeCustomers"
+        icon="people"
+        [trend]="5"
+        color="success">
+      </app-stat-card>
+      <app-stat-card
+        label="Pending Orders"
+        [value]="stats.pendingOrders"
+        icon="pending_actions"
+        color="accent">
+      </app-stat-card>
+      <app-stat-card
+        label="Low Stock Alerts"
+        [value]="stats.lowStockCount"
+        icon="warning"
+        color="warn">
+      </app-stat-card>
+    </div>
+
+    <div class="dashboard-panels">
+      <!-- Recent Orders -->
+      <mat-card class="panel">
+        <mat-card-header>
+          <mat-card-title>Recent Orders</mat-card-title>
+          <span class="panel-action">
+            <a mat-button routerLink="/orders" color="primary">View all</a>
+          </span>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="recentOrders" class="full-width-table">
+            <ng-container matColumnDef="orderNumber">
+              <th mat-header-cell *matHeaderCellDef>Order #</th>
+              <td mat-cell *matCellDef="let order">{{ order.orderNumber }}</td>
+            </ng-container>
+            <ng-container matColumnDef="customer">
+              <th mat-header-cell *matHeaderCellDef>Customer</th>
+              <td mat-cell *matCellDef="let order">{{ order.customerName }}</td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef>Total</th>
+              <td mat-cell *matCellDef="let order">{{ order.total | currency }}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let order">
+                <span class="status-badge {{ order.status }}">{{ order.status }}</span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['orderNumber','customer','total','status']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['orderNumber','customer','total','status']"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Low Stock Alerts -->
+      <mat-card class="panel">
+        <mat-card-header>
+          <mat-card-title>Low Stock Alerts</mat-card-title>
+          <span class="panel-action">
+            <a mat-button routerLink="/products" color="primary">Manage</a>
+          </span>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let product of lowStockProducts">
+              <mat-icon matListItemIcon color="warn">warning</mat-icon>
+              <span matListItemTitle>{{ product.name | truncate:30 }}</span>
+              <span matListItemLine>
+                Stock: <strong>{{ product.stockQuantity }}</strong> / Reorder at: {{ product.reorderPoint }}
+              </span>
+            </mat-list-item>
+            <p *ngIf="lowStockProducts.length === 0" class="empty-state">
+              All products are sufficiently stocked.
+            </p>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ng-container>
+</div>

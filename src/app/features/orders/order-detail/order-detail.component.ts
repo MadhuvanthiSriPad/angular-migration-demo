@@ -1,0 +1,41 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Order } from '../../../shared/models/order.model';
+import { OrderService } from '../services/order.service';
+import { NotificationService } from '../../../core/services/notification.service';
+
+@Component({
+  selector: 'app-order-detail',
+  templateUrl: './order-detail.component.html',
+  styleUrls: ['./order-detail.component.scss']
+})
+export class OrderDetailComponent implements OnInit {
+  order: Order | undefined;
+  itemColumns = ['sku', 'productName', 'quantity', 'unitPrice', 'lineTotal'];
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private orderService: OrderService,
+    private notificationService: NotificationService
+  ) {}
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id')!;
+    this.orderService.getById(id).subscribe(order => {
+      this.order = order;
+    });
+  }
+
+  onCancel(): void {
+    if (!this.order || !confirm('Cancel this order?')) return;
+    this.orderService.updateStatus(this.order.id, 'cancelled').subscribe(() => {
+      this.notificationService.success(`Order ${this.order!.orderNumber} cancelled.`);
+      this.router.navigate(['/orders']);
+    });
+  }
+
+  onBack(): void {
+    this.router.navigate(['/orders']);
+  }
+}

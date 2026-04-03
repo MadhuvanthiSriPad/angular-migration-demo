@@ -1,0 +1,31 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <button mat-icon-button (click)="onToggleSidenav()" aria-label="Toggle navigation">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="app-title">RetailConnect</span>
+
+  <span class="spacer"></span>
+
+  <ng-container *ngIf="currentUser; else guestTpl">
+    <span class="user-name">{{ currentUser.name }}</span>
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item disabled>
+        <mat-icon>badge</mat-icon>
+        <span>{{ currentUser.role | titlecase }}</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="onLogout()">
+        <mat-icon>logout</mat-icon>
+        <span>Sign out</span>
+      </button>
+    </mat-menu>
+  </ng-container>
+
+  <ng-template #guestTpl>
+    <button mat-button routerLink="/login">Sign in</button>
+  </ng-template>
+</mat-toolbar>

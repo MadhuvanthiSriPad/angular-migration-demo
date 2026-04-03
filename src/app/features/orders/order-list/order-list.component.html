@@ -1,0 +1,79 @@
+<div class="page-container">
+  <h1 class="section-title">Orders</h1>
+
+  <!-- Status filter chips -->
+  <mat-chip-list class="status-chips" aria-label="Filter by status">
+    <mat-chip
+      [class.chip-selected]="selectedStatus === ''"
+      (click)="onStatusFilter('')">
+      All
+    </mat-chip>
+    <mat-chip
+      *ngFor="let s of statuses"
+      [class.chip-selected]="selectedStatus === s"
+      (click)="onStatusFilter(s)">
+      {{ s | titlecase }}
+    </mat-chip>
+  </mat-chip-list>
+
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="orders" class="full-width-table">
+
+        <ng-container matColumnDef="orderNumber">
+          <th mat-header-cell *matHeaderCellDef>Order #</th>
+          <td mat-cell *matCellDef="let o">
+            <a class="order-link" (click)="onViewDetail(o)">{{ o.orderNumber }}</a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customer">
+          <th mat-header-cell *matHeaderCellDef>Customer</th>
+          <td mat-cell *matCellDef="let o">{{ o.customerName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="items">
+          <th mat-header-cell *matHeaderCellDef>Items</th>
+          <td mat-cell *matCellDef="let o">{{ o.items.length }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total</th>
+          <td mat-cell *matCellDef="let o">{{ o.total | currency }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let o">
+            <span class="status-badge {{ o.status }}">{{ o.status }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let o">{{ o.createdAt | date:'mediumDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let o">
+            <button mat-icon-button (click)="onViewDetail(o)" matTooltip="View details">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="primary"
+              [disabled]="!canAdvance(o)"
+              (click)="onAdvanceStatus(o)"
+              matTooltip="Advance status">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

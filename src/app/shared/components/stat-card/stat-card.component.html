@@ -1,0 +1,17 @@
+<mat-card class="stat-card stat-card--{{ color }}">
+  <mat-card-content>
+    <div class="stat-card__layout">
+      <div class="stat-card__info">
+        <div class="stat-card__label">{{ label }}</div>
+        <div class="stat-card__value">{{ value }}</div>
+        <div class="stat-card__trend" *ngIf="trend !== undefined">
+          <mat-icon>{{ trend >= 0 ? 'trending_up' : 'trending_down' }}</mat-icon>
+          <span>{{ trend >= 0 ? '+' : '' }}{{ trend }}% vs last month</span>
+        </div>
+      </div>
+      <div class="stat-card__icon">
+        <mat-icon>{{ icon }}</mat-icon>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

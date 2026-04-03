@@ -1,0 +1,52 @@
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 16px 0 24px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.items-card {
+  margin-top: 0;
+}
+
+.full-width-table {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.order-totals {
+  max-width: 300px;
+  margin-left: auto;
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+
+  .total-row--grand {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+}
+
+.label {
+  color: rgba(0,0,0,0.54);
+  font-size: 12px;
+}
+
+code {
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
