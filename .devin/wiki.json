@@ -1,0 +1,232 @@
+{
+  "repo_notes": [
+    {
+      "content": ""
+    }
+  ],
+  "pages": [
+    {
+      "title": "RetailConnect — Project Overview",
+      "purpose": "High-level introduction to the RetailConnect Angular 14 store management portal: what it does, its tech stack, how to run it locally. Links to child pages for architecture and setup details.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Getting Started",
+      "purpose": "Step-by-step guide for setting up the development environment: Node.js version requirement (.nvmrc), npm install, npm start, and login credentials. Covers environment configuration files and the Angular CLI build pipeline.",
+      "parent": "RetailConnect — Project Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Angular 14 → 18 Migration Targets",
+      "purpose": "Documents all intentional Angular 14 patterns that are migration targets for Angular 18: NgModule→Standalone, *ngIf/*ngFor→@if/@for, class-based guards→functional guards, class-based interceptors→withInterceptors(), BehaviorSubject→Signals, deprecated RxJS operators (pluck, toPromise), Webpack→esbuild, and Karma/Jasmine→Jest. Includes code pointers for each pattern.",
+      "parent": "RetailConnect — Project Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Application Architecture",
+      "purpose": "Overview of the NgModule-based architecture: AppModule bootstrap, lazy-loaded feature modules, CoreModule singleton pattern, SharedModule aggregation, and the overall directory layout. Links to child pages for each architectural layer.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Core Module",
+      "purpose": "Deep dive into src/app/core/: the singleton services, route guard, and HTTP interceptor that form the application's infrastructure layer. Covers CoreModule's guard against double-import, AuthGuard (class-based CanActivate), AuthInterceptor (Bearer token injection and 401 handling), StorageService (localStorage wrapper), and NotificationService (MatSnackBar facade).",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Shared Module",
+      "purpose": "Covers src/app/shared/: the SharedModule that aggregates Angular Material imports, common components (Header, Sidebar, StatCard, DateRangePicker), data models, and the TruncatePipe. Explains the MATERIAL_MODULES constant pattern and how feature modules consume SharedModule.",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Shell Components: Header, Sidebar & StatCard",
+      "purpose": "Details the three layout/shell components in src/app/shared/components/: HeaderComponent (top navigation bar with sidenav toggle and user menu), SidebarComponent (vertical nav links to feature routes), and StatCardComponent (KPI metric card used on the dashboard). Covers inputs, outputs, and template structure.",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "DateRangePicker Component",
+      "purpose": "Detailed documentation of the reusable DateRangePickerComponent: its Reactive Forms integration (FormGroup with start/end controls), Angular Material mat-date-range-input/mat-date-range-picker wiring, the maxDate constraint, Clear/Apply actions, and the fixed 280px width styling. Explains how it is consumed by OrderListComponent.",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Routing & Lazy Loading",
+      "purpose": "Explains the top-level AppRoutingModule route configuration: default redirect to /dashboard, lazy-loaded feature modules (dashboard, products, orders, customers), the /login public route, and the wildcard redirect. Covers how AuthGuard is applied to protected routes and the returnUrl query-param pattern.",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Feature Modules",
+      "purpose": "Overview of the four lazy-loaded feature areas (Dashboard, Products, Orders, Customers) and the Auth feature. Summarizes each module's purpose and links to child pages for detailed coverage.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Authentication Feature",
+      "purpose": "Covers the Auth feature module (src/app/features/auth/): LoginComponent template and reactive form, credential validation flow via AuthService, returnUrl redirect after login, and the mock user credentials. Cross-references AuthService in CoreModule.",
+      "parent": "Feature Modules",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Dashboard Feature",
+      "purpose": "Documents the Dashboard feature (src/app/features/dashboard/): DashboardComponent's use of combineLatest to aggregate stats (total revenue, active customers, pending orders, low-stock count) from three services, the recent orders list, low-stock products list, and how StatCard components display KPIs.",
+      "parent": "Feature Modules",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Products Feature",
+      "purpose": "Covers the Products feature module (src/app/features/products/): ProductListComponent (MatTableDataSource with paginator/sort, search debounce, category filter, low-stock highlighting, delete), ProductFormComponent (reactive form for create/edit with validation, SKU pattern, isEditMode), ProductService (BehaviorSubject state, CRUD with simulated delay, getLowStockProducts), and MOCK_PRODUCTS seed data.",
+      "parent": "Feature Modules",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Orders Feature",
+      "purpose": "Documents the Orders feature module (src/app/features/orders/): OrderListComponent (status filter chips, DateRangePicker integration, advance-status workflow, canAdvance guard), OrderDetailComponent (single order view), OrderService (BehaviorSubject state, updateStatus pipeline, getLatestOrderForCustomer switchMap, deprecated toPromise), and MOCK_ORDERS seed data.",
+      "parent": "Feature Modules",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Customers Feature",
+      "purpose": "Covers the Customers feature module (src/app/features/customers/): CustomerListComponent (display of customer tier badges, status, spend), CustomerService (BehaviorSubject state, getActiveCount, getTopCustomers), and MOCK_CUSTOMERS seed data. Notes the read-only nature of the customer list compared to products.",
+      "parent": "Feature Modules",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Data Layer & State Management",
+      "purpose": "Overview of how the application manages state without a backend: the BehaviorSubject pattern used across all services, localStorage persistence via StorageService, mock data seeds, and the storage key naming convention (rc_*). Links to child pages for service-specific details.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Data Models",
+      "purpose": "Reference documentation for all TypeScript interfaces and types in src/app/shared/models/: Product (with ProductCategory union and ProductFilter), Order (with OrderItem, Address, and OrderStatus), and Customer (with CustomerTier and CustomerSummary). Includes field-by-field descriptions and relationships between models.",
+      "parent": "Data Layer & State Management",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Mock Data & Storage Keys",
+      "purpose": "Documents the mock data seed files (MOCK_PRODUCTS, MOCK_ORDERS, MOCK_CUSTOMERS, MOCK_USERS) used as fallback data when localStorage is empty. Lists all storage keys (rc_products, rc_orders, rc_customers, rc_auth_token, rc_auth_user) and explains the load-from-storage-or-fallback pattern used in each service.",
+      "parent": "Data Layer & State Management",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Styling System",
+      "purpose": "Overview of the application's SCSS architecture: global styles entry point, the retail-theme Angular Material configuration, and the material-overrides partial. Links to child pages for theme details and component-level styles.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Global Styles & Retail Theme",
+      "purpose": "Deep dive into src/styles.scss: the $retail-theme construction (Indigo primary, Amber accent, Red warn), mat.core() and mat.all-component-themes() initialization, global reset (border-box, height 100%, Roboto font), .page-container, .section-title, .status-badge modifier classes (.active, .inactive, .pending, .completed, .cancelled), and the mat-card sibling spacing rule. Notes the deprecated @import and planned migration to @use/token API.",
+      "parent": "Styling System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Component-Level Styles",
+      "purpose": "Covers the SCSS patterns used at the component level across the application: encapsulated styles for order-list (filters-row, status-chips, chip-selected override with !important, full-width-table, order-link), product-list, product-form, login, dashboard, and shared components. Explains the #3f51b5 primary color usage and ViewEncapsulation defaults.",
+      "parent": "Styling System",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Testing",
+      "purpose": "Documents the testing infrastructure and patterns used in the project: Karma/Jasmine setup (karma.conf.js, src/test.ts), the single existing spec file (ProductListComponent), TestBed configuration patterns, jasmine.SpyObj usage for service mocking, and the migration target of Jest. Covers tsconfig.spec.json and polyfills.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Glossary",
+      "purpose": "Definitions of all codebase-specific terms, Angular/RxJS jargon, abbreviations, and domain concepts that an onboarding engineer needs to know. Each entry includes a code pointer.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    }
+  ]
+}
