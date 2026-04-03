@@ -17,7 +17,9 @@ $retail-theme: mat.define-light-theme((
 @include mat.all-component-themes($retail-theme);
 
 // Custom brand overrides — uses legacy non-MDC selectors (migration surface)
-@use 'styles/material-overrides' as overrides;
+// @import is deprecated in Dart SCSS but still valid in Angular 14.
+// Angular 18 migration: convert to @use with the new token API.
+@import 'styles/material-overrides';
 
 * {
   box-sizing: border-box;
