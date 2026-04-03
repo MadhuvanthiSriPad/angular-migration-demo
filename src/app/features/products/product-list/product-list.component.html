@@ -20,9 +20,11 @@
           <mat-label>Category</mat-label>
           <mat-select [formControl]="categoryControl">
             <mat-option value="">All categories</mat-option>
-            <mat-option *ngFor="let cat of categories" [value]="cat">
-              {{ cat | titlecase }}
-            </mat-option>
+            @for (cat of categories; track cat) {
+              <mat-option [value]="cat">
+                {{ cat | titlecase }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
@@ -57,7 +59,9 @@
           <td mat-cell *matCellDef="let p">
             <span [class.low-stock]="isLowStock(p)">
               {{ p.stockQuantity }}
-              <mat-icon *ngIf="isLowStock(p)" color="warn" matTooltip="Below reorder point">warning</mat-icon>
+              @if (isLowStock(p)) {
+                <mat-icon color="warn" matTooltip="Below reorder point">warning</mat-icon>
+              }
             </span>
           </td>
         </ng-container>

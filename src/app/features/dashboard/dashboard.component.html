@@ -1,16 +1,16 @@
 <div class="page-container">
   <h1 class="section-title">Dashboard</h1>
 
-  <div *ngIf="isLoading" class="loading-state">
-    <mat-spinner diameter="48"></mat-spinner>
-  </div>
-
-  <ng-container *ngIf="!isLoading">
+  @if (isLoading) {
+    <div class="loading-state">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  } @else {
     <!-- KPI Cards -->
     <div class="stats-grid">
       <app-stat-card
         label="Total Revenue"
-        [value]="stats.totalRevenue | currency"
+        [value]="(stats.totalRevenue | currency) ?? ''"
         icon="attach_money"
         [trend]="12"
         color="primary">
@@ -81,19 +81,22 @@
         </mat-card-header>
         <mat-card-content>
           <mat-list>
-            <mat-list-item *ngFor="let product of lowStockProducts">
-              <mat-icon matListItemIcon color="warn">warning</mat-icon>
-              <span matListItemTitle>{{ product.name | truncate:30 }}</span>
-              <span matListItemLine>
-                Stock: <strong>{{ product.stockQuantity }}</strong> / Reorder at: {{ product.reorderPoint }}
-              </span>
-            </mat-list-item>
-            <p *ngIf="lowStockProducts.length === 0" class="empty-state">
-              All products are sufficiently stocked.
-            </p>
+            @for (product of lowStockProducts; track product.id) {
+              <mat-list-item>
+                <mat-icon matListItemIcon color="warn">warning</mat-icon>
+                <span matListItemTitle>{{ product.name | truncate:30 }}</span>
+                <span matListItemLine>
+                  Stock: <strong>{{ product.stockQuantity }}</strong> / Reorder at: {{ product.reorderPoint }}
+                </span>
+              </mat-list-item>
+            } @empty {
+              <p class="empty-state">
+                All products are sufficiently stocked.
+              </p>
+            }
           </mat-list>
         </mat-card-content>
       </mat-card>
     </div>
-  </ng-container>
+  }
 </div>

@@ -3,19 +3,20 @@
     <mat-icon>arrow_back</mat-icon> Back to Orders
   </button>
 
-  <ng-container *ngIf="order; else notFound">
+  @if (order) {
     <div class="order-header">
       <div>
         <h1 class="section-title">{{ order.orderNumber }}</h1>
         <span class="status-badge {{ order.status }}">{{ order.status }}</span>
       </div>
-      <button
-        mat-stroked-button
-        color="warn"
-        *ngIf="order.status !== 'cancelled' && order.status !== 'completed'"
-        (click)="onCancel()">
-        Cancel Order
-      </button>
+      @if (order.status !== 'cancelled' && order.status !== 'completed') {
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="onCancel()">
+          Cancel Order
+        </button>
+      }
     </div>
 
     <div class="detail-grid">
@@ -82,9 +83,7 @@
         </div>
       </mat-card-content>
     </mat-card>
-  </ng-container>
-
-  <ng-template #notFound>
+  } @else {
     <p>Order not found.</p>
-  </ng-template>
+  }
 </div>

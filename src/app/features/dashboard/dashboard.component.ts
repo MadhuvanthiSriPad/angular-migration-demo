@@ -1,6 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
+import { StatCardComponent } from '../../shared/components/stat-card/stat-card.component';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { ProductService } from '../products/services/product.service';
 import { OrderService } from '../orders/services/order.service';
 import { CustomerService } from '../customers/services/customer.service';
@@ -16,6 +27,8 @@ interface DashboardStats {
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, CurrencyPipe, RouterModule, MatCardModule, MatTableModule, MatListModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatDividerModule, StatCardComponent, TruncatePipe],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

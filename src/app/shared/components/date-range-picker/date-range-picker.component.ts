@@ -1,23 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
 
 export interface DateRange {
   start: Date | null;
   end: Date | null;
 }
 
-/**
- * Custom branded date range picker used on the Orders list.
- *
- * MIGRATION NOTE — Angular Material 15 (MDC):
- *   The template references mat-date-range-input and mat-date-range-picker,
- *   which changed internal DOM structure in v15. The custom calendar styles
- *   in _material-overrides.scss (.mat-calendar-body-selected,
- *   .mat-datepicker-content, etc.) must be rewritten using the v15
- *   mat.datepicker-overrides() token API after migration.
- */
 @Component({
   selector: 'app-date-range-picker',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatDatepickerModule, MatButtonModule],
   templateUrl: './date-range-picker.component.html',
   styleUrls: ['./date-range-picker.component.scss']
 })

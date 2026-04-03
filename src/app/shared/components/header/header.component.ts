@@ -1,27 +1,28 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
-import { AuthService, AuthUser } from '../../../core/services/auth.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   @Output() sidenavToggle = new EventEmitter<void>();
 
-  currentUser: AuthUser | null = null;
-
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router
   ) {}
-
-  ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-    });
-  }
 
   onToggleSidenav(): void {
     this.sidenavToggle.emit();

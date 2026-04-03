@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable, of } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 import { Product, ProductFilter } from '../../../shared/models/product.model';
 import { StorageService } from '../../../core/services/storage.service';
@@ -11,8 +12,8 @@ import { MOCK_PRODUCTS } from './product.mock';
 export class ProductService {
   private readonly STORAGE_KEY = 'rc_products';
 
-  private productsSubject = new BehaviorSubject<Product[]>(this.loadFromStorage());
-  products$: Observable<Product[]> = this.productsSubject.asObservable();
+  products = signal<Product[]>(this.loadFromStorage());
+  products$ = toObservable(this.products);
 
   constructor(private storage: StorageService) {}
 
@@ -38,15 +39,15 @@ export class ProductService {
     return of(product).pipe(
       delay(300),
       tap(p => {
-        const updated = [...this.productsSubject.value, p];
+        const updated = [...this.products(), p];
         this.saveToStorage(updated);
-        this.productsSubject.next(updated);
+        this.products.set(updated);
       })
     );
   }
 
   update(id: string, changes: Partial<Product>): Observable<Product> {
-    const current = this.productsSubject.value;
+    const current = this.products();
     const index = current.findIndex(p => p.id === id);
     if (index === -1) throw new Error(`Product ${id} not found`);
 
@@ -63,7 +64,7 @@ export class ProductService {
         const list = [...current];
         list[index] = p;
         this.saveToStorage(list);
-        this.productsSubject.next(list);
+        this.products.set(list);
       })
     );
   }
@@ -72,9 +73,9 @@ export class ProductService {
     return of(void 0).pipe(
       delay(300),
       tap(() => {
-        const updated = this.productsSubject.value.filter(p => p.id !== id);
+        const updated = this.products().filter(p => p.id !== id);
         this.saveToStorage(updated);
-        this.productsSubject.next(updated);
+        this.products.set(updated);
       })
     );
   }

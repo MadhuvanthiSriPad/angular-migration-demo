@@ -1,11 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 import { Customer } from '../../../shared/models/customer.model';
 import { CustomerService } from '../services/customer.service';
 
 @Component({
   selector: 'app-customer-list',
+  standalone: true,
+  imports: [CommonModule, CurrencyPipe, TitleCasePipe, MatCardModule, MatTableModule, MatChipsModule, MatIconModule],
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss']
 })

@@ -1,14 +1,23 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule, CurrencyPipe, TitleCasePipe, DatePipe } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DateRangePickerComponent, DateRange } from '../../../shared/components/date-range-picker/date-range-picker.component';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
 import { OrderService } from '../services/order.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { DateRange } from '../../../shared/components/date-range-picker/date-range-picker.component';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-list',
+  standalone: true,
+  imports: [CommonModule, CurrencyPipe, TitleCasePipe, DatePipe, MatCardModule, MatTableModule, MatChipsModule, MatIconModule, MatButtonModule, MatTooltipModule, DateRangePickerComponent],
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.scss']
 })
