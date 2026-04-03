@@ -1,41 +1,103 @@
-# RetailConnect — Angular 14 Migration Demo
+# RetailConnect — Store Management Portal
 
-A store management portal built with **Angular 14** to demonstrate an enterprise Angular 14 → 18 migration.
+## Project Overview
 
-## Stack
+RetailConnect is a store management portal built with Angular. It provides tools for managing products, tracking orders, and monitoring customer data in a retail environment. It uses localStorage for persistence (no backend required).
 
-- Angular 14 + Angular Material 14
-- RxJS 7.5
-- NgModule architecture
-- Jasmine / Karma tests
-- localStorage for data persistence (no backend required)
+## Tech Stack
 
-## Architecture
+| Category | Technology | Version |
+|---|---|---|
+| **Framework** | Angular | `^14.3.0` |
+| **UI Library** | Angular Material | `^14.2.7` |
+| **Reactive Programming** | RxJS | `~7.5.0` |
+| **Build Tool** | Webpack via Angular CLI | `^14.2.13` |
+| **Test Runner** | Karma / Jasmine | `~6.4.0` / `~4.2.0` |
+| **Language** | TypeScript | `~4.7.2` |
+| **Runtime** | Node.js | 16 |
+
+## High-Level Architecture
+
+```mermaid
+graph TD
+    subgraph "App Module (root, bootstrapped via main.ts)"
+        AppModule
+    end
+
+    subgraph "Core Module — singleton services, guards, interceptors"
+        AuthService
+        StorageService
+        NotificationService
+        AuthGuard
+        AuthInterceptor
+    end
+
+    subgraph "Shared Module — reusable components, models, pipes"
+        Header
+        Sidebar
+        StatCard
+        DateRangePicker
+        Models["Models (product, order, customer)"]
+        TruncatePipe
+    end
+
+    subgraph "Feature Modules (lazy-loaded, protected by AuthGuard)"
+        Dashboard
+        Products
+        Orders
+        Customers
+        Auth["Auth (login)"]
+    end
+
+    AppModule --> CoreModule
+    AppModule --> SharedModule
+    AppModule -- "lazy loads" --> Dashboard
+    AppModule -- "lazy loads" --> Products
+    AppModule -- "lazy loads" --> Orders
+    AppModule -- "lazy loads" --> Customers
+    AppModule -- "lazy loads" --> Auth
+    AuthGuard -. "protects" .-> Dashboard
+    AuthGuard -. "protects" .-> Products
+    AuthGuard -. "protects" .-> Orders
+    AuthGuard -. "protects" .-> Customers
+```
+
+## Folder Structure
 
 ```
 src/app/
-├── core/                          # Singleton services, guards, interceptors
+├── core/
+│   ├── guards/auth.guard.ts
+│   ├── interceptors/auth.interceptor.ts
 │   ├── services/
-│   │   ├── auth.service.ts        # Auth state (BehaviorSubject)
-│   │   ├── storage.service.ts     # Data persistence (localStorage)
+│   │   ├── auth.service.ts
+│   │   ├── storage.service.ts
 │   │   └── notification.service.ts
-│   ├── guards/auth.guard.ts       # Class-based CanActivate (→ functional in v18)
-│   └── interceptors/auth.interceptor.ts
-├── shared/                        # Reusable components, models, pipes
-│   ├── components/
-│   │   ├── header/
-│   │   ├── sidebar/
-│   │   └── stat-card/
-│   ├── models/                    # product.model.ts, order.model.ts, customer.model.ts
-│   └── pipes/truncate.pipe.ts
-└── features/                      # Lazy-loaded feature modules
-    ├── dashboard/
-    ├── products/                  # List + form with reactive forms
-    ├── orders/                    # List + detail with status workflow
-    └── customers/
+│   └── core.module.ts
+├── shared/
+│   ├── components/ (header, sidebar, stat-card, date-range-picker)
+│   ├── models/ (product, order, customer)
+│   ├── pipes/truncate.pipe.ts
+│   └── shared.module.ts
+├── features/
+│   ├── auth/
+│   ├── dashboard/
+│   ├── products/ (product-list, product-form, services)
+│   ├── orders/ (order-list, order-detail, services)
+│   └── customers/ (customer-list, services)
+├── app-routing.module.ts
+├── app.component.ts/.html
+└── app.module.ts
 ```
 
-## Running locally
+## Key Functional Areas
+
+- **Dashboard:** KPI tracking and recent activity summaries (`src/app/features/dashboard/`)
+- **Products:** CRUD for inventory with stock alerts; sub-components: product-list, product-form (`src/app/features/products/`)
+- **Orders:** Order status management and date-filtered history; sub-components: order-list, order-detail (`src/app/features/orders/`)
+- **Customers:** Customer segmentation and spending analytics; sub-component: customer-list (`src/app/features/customers/`)
+
+## Local Development
 
 ```bash
 npm install
@@ -43,15 +105,3 @@ npm start          # http://localhost:4200
 ```
 
 Login with `admin@retailconnect.io` / `admin123`
-
-## Migration targets (Angular 14 → 18)
-
-| Pattern | Current (v14) | Target (v18) |
-|---|---|---|
-| Module system | `NgModule` | Standalone components |
-| Template syntax | `*ngIf`, `*ngFor` | `@if`, `@for` |
-| Route guards | `CanActivate` class | Functional guard |
-| HTTP interceptors | Class-based | `withInterceptors()` |
-| State | `BehaviorSubject` | Signals |
-| Build | Webpack | esbuild |
-| Tests | Karma / Jasmine | Jest |
