@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { delay, pluck, tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 
 export interface AuthUser {
@@ -72,5 +72,17 @@ export class AuthService {
 
   getToken(): string | null {
     return this.storage.get<string>(this.TOKEN_KEY);
+  }
+
+  /**
+   * Returns an observable of the current user's role.
+   *
+   * MIGRATION NOTE — deprecated RxJS operator:
+   *   `pluck` was deprecated in RxJS 7.4 and removed in RxJS 8.
+   *   Devin migration fix: replace with map(user => user?.role)
+   */
+  getCurrentUserRole(): Observable<string | undefined> {
+    // @ts-ignore — pluck is deprecated; intentional for migration demo
+    return this.currentUser$.pipe(pluck('role'));
   }
 }

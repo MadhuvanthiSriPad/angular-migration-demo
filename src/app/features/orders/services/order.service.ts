@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { delay, map, tap } from 'rxjs/operators';
+import { delay, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
 import { StorageService } from '../../../core/services/storage.service';
 import { MOCK_ORDERS } from './order.mock';
@@ -72,6 +72,40 @@ export class OrderService {
           .reduce((sum, o) => sum + o.total, 0)
       )
     );
+  }
+
+  /**
+   * Returns the most recent order for a given customer.
+   *
+   * MIGRATION NOTE — switchMap chain:
+   *   This pattern (getAll → filter → switchMap → map) is correct in RxJS 7
+   *   but the inner observable should be replaced with a dedicated query in v18
+   *   to avoid re-subscribing on every emission of orders$.
+   *   Devin fix: extract to a combineLatest + filter pattern.
+   */
+  getLatestOrderForCustomer(customerId: string): Observable<Order | undefined> {
+    return this.getAll().pipe(
+      map(orders => orders.filter(o => o.customerId === customerId)),
+      filter(orders => orders.length > 0),
+      switchMap(orders => {
+        const latest = [...orders].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )[0];
+        return of(latest);
+      })
+    );
+  }
+
+  /**
+   * Resolves the first pending order as a Promise for legacy callback consumers.
+   *
+   * MIGRATION NOTE — deprecated operator:
+   *   Observable.toPromise() was deprecated in RxJS 7 and removed in RxJS 8.
+   *   Devin fix: replace with lastValueFrom(this.getByStatus('pending').pipe(take(1)))
+   *   imported from 'rxjs'.
+   */
+  getFirstPendingOrderAsPromise(): Promise<Order[] | undefined> {
+    return this.getByStatus('pending').toPromise();
   }
 
   private loadFromStorage(): Order[] {

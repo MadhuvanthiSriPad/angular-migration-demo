@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
 import { OrderService } from '../services/order.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { DateRange } from '../../../shared/components/date-range-picker/date-range-picker.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,9 +14,11 @@ import { Router } from '@angular/router';
 })
 export class OrderListComponent implements OnInit, OnDestroy {
   orders: Order[] = [];
+  allOrders: Order[] = [];
   displayedColumns = ['orderNumber', 'customer', 'items', 'total', 'status', 'date', 'actions'];
   statuses: OrderStatus[] = ['pending', 'processing', 'shipped', 'completed', 'cancelled'];
   selectedStatus: OrderStatus | '' = '';
+  activeDateRange: DateRange = { start: null, end: null };
 
   private destroy$ = new Subject<void>();
 
@@ -29,9 +32,8 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.orderService.getAll()
       .pipe(takeUntil(this.destroy$))
       .subscribe(orders => {
-        this.orders = this.selectedStatus
-          ? orders.filter(o => o.status === this.selectedStatus)
-          : orders;
+        this.allOrders = orders;
+        this.applyFilters();
       });
   }
 
@@ -42,11 +44,31 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   onStatusFilter(status: OrderStatus | ''): void {
     this.selectedStatus = status;
-    this.orderService.getAll()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(orders => {
-        this.orders = status ? orders.filter(o => o.status === status) : orders;
+    this.applyFilters();
+  }
+
+  onDateRangeChange(range: DateRange): void {
+    this.activeDateRange = range;
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    let filtered = [...this.allOrders];
+
+    if (this.selectedStatus) {
+      filtered = filtered.filter(o => o.status === this.selectedStatus);
+    }
+
+    if (this.activeDateRange.start && this.activeDateRange.end) {
+      const start = this.activeDateRange.start.getTime();
+      const end = this.activeDateRange.end.getTime();
+      filtered = filtered.filter(o => {
+        const created = new Date(o.createdAt).getTime();
+        return created >= start && created <= end;
       });
+    }
+
+    this.orders = filtered;
   }
 
   onViewDetail(order: Order): void {

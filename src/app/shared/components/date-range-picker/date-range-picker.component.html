@@ -1,0 +1,19 @@
+<mat-form-field appearance="outline" class="date-range-field" [formGroup]="form">
+  <mat-label>{{ label }}</mat-label>
+
+  <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+    <input matStartDate formControlName="start" placeholder="Start date">
+    <input matEndDate formControlName="end" placeholder="End date">
+  </mat-date-range-input>
+
+  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+
+  <mat-date-range-picker #picker>
+    <mat-date-range-picker-actions>
+      <button mat-button matDateRangePickerCancel (click)="clear()">Clear</button>
+      <button mat-raised-button color="primary" matDateRangePickerApply>Apply</button>
+    </mat-date-range-picker-actions>
+  </mat-date-range-picker>
+</mat-form-field>

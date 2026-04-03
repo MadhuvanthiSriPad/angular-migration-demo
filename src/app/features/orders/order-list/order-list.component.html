@@ -1,6 +1,14 @@
 <div class="page-container">
   <h1 class="section-title">Orders</h1>
 
+  <!-- Filters row -->
+  <div class="filters-row">
+    <app-date-range-picker
+      label="Order date range"
+      (rangeChange)="onDateRangeChange($event)">
+    </app-date-range-picker>
+  </div>
+
   <!-- Status filter chips -->
   <mat-chip-list class="status-chips" aria-label="Filter by status">
     <mat-chip

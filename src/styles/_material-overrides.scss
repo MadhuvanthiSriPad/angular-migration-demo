@@ -1,0 +1,151 @@
+// =============================================================================
+// Custom Angular Material Theme Overrides — Angular 14 (non-MDC)
+//
+// MIGRATION WARNING (Angular Material 15+):
+//   Angular Material 15 migrated ALL components to MDC (Material Design Components).
+//   Every selector below targets the *legacy* non-MDC DOM structure.
+//   After migration these overrides produce NO visual effect because the class
+//   names change:
+//
+//   Legacy (v14)                   MDC (v15+)
+//   ─────────────────────────────────────────────────────
+//   .mat-card                  →   .mat-mdc-card
+//   .mat-form-field            →   .mat-mdc-form-field
+//   .mat-table                 →   .mat-mdc-table
+//   .mat-header-row            →   .mat-mdc-header-row
+//   .mat-row                   →   .mat-mdc-row
+//   .mat-chip                  →   .mat-mdc-chip
+//   .mat-raised-button         →   .mat-mdc-raised-button
+//   .mat-datepicker-content    →   .mat-datepicker-content (unchanged, but
+//                                  internal structure differs)
+//   .mat-calendar-body-selected→   .mat-calendar-body-selected (class kept,
+//                                  but theming approach changed to tokens)
+//
+// Devin migration task: replace each selector with its MDC equivalent and
+// validate visual parity. Custom date picker overrides require special attention
+// (see bottom of file).
+// =============================================================================
+
+// --- Cards -------------------------------------------------------------------
+.mat-card {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  }
+}
+
+// --- Form fields -------------------------------------------------------------
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: rgba(0, 0, 0, 0.15);
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #3f51b5;
+}
+
+.mat-form-field-label {
+  font-size: 14px;
+  letter-spacing: 0.1px;
+}
+
+// --- Tables ------------------------------------------------------------------
+.mat-table {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.mat-header-row {
+  background-color: #f8f9fb;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+.mat-header-cell {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mat-row:hover {
+  background-color: rgba(63, 81, 181, 0.04);
+}
+
+// --- Chips -------------------------------------------------------------------
+.mat-chip {
+  font-size: 12px !important;
+  min-height: 24px !important;
+  padding: 2px 10px !important;
+}
+
+// --- Buttons -----------------------------------------------------------------
+.mat-raised-button.mat-primary {
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.mat-stroked-button {
+  border-radius: 6px;
+}
+
+// --- Datepicker (custom theme — most complex MDC migration surface) ----------
+//
+// The RetailConnect brand uses a custom date picker style with:
+//   1. Rounded calendar popup
+//   2. Brand-blue selected date
+//   3. Subtle range highlight
+//
+// In Angular Material 15+ the datepicker internals moved to MDC tokens.
+// The correct v18 approach is:
+//   @include mat.datepicker-overrides((
+//     calendar-date-selected-state-background-color: #3f51b5,
+//     calendar-date-in-range-state-background-color: rgba(63, 81, 181, 0.12),
+//   ));
+// but that is NOT backwards compatible with v14 syntax.
+
+.mat-datepicker-content {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+.mat-datepicker-content .mat-calendar {
+  height: auto !important;
+}
+
+.mat-calendar-header {
+  background-color: #3f51b5;
+  color: white;
+
+  .mat-calendar-arrow {
+    fill: white;
+  }
+
+  button {
+    color: white;
+  }
+}
+
+.mat-calendar-body-selected {
+  background-color: #3f51b5 !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.mat-calendar-body-in-range::before {
+  background-color: rgba(63, 81, 181, 0.15) !important;
+}
+
+.mat-calendar-body-range-start::before,
+.mat-calendar-body-range-end::before {
+  background-color: rgba(63, 81, 181, 0.15) !important;
+}
+
+.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: #3f51b5 !important;
+  font-weight: 600;
+}

@@ -16,6 +16,9 @@ $retail-theme: mat.define-light-theme((
 
 @include mat.all-component-themes($retail-theme);
 
+// Custom brand overrides — uses legacy non-MDC selectors (migration surface)
+@use 'styles/material-overrides' as overrides;
+
 * {
   box-sizing: border-box;
 }

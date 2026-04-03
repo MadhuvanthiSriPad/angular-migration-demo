@@ -24,11 +24,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 // Shared components & pipes
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { StatCardComponent } from './components/stat-card/stat-card.component';
+import { DateRangePickerComponent } from './components/date-range-picker/date-range-picker.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 
 const MATERIAL_MODULES = [
@@ -51,7 +54,9 @@ const MATERIAL_MODULES = [
   MatDividerModule,
   MatTooltipModule,
   MatDialogModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 ];
 
 @NgModule({
@@ -59,6 +64,7 @@ const MATERIAL_MODULES = [
     HeaderComponent,
     SidebarComponent,
     StatCardComponent,
+    DateRangePickerComponent,
     TruncatePipe
   ],
   imports: [
@@ -74,6 +80,7 @@ const MATERIAL_MODULES = [
     HeaderComponent,
     SidebarComponent,
     StatCardComponent,
+    DateRangePickerComponent,
     TruncatePipe,
     ...MATERIAL_MODULES
   ]
