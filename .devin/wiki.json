@@ -12,7 +12,7 @@
       "parent": null,
       "page_notes": [
         {
-          "content": "",
+          "content": "The high-level architecture diagram should match the full mermaid diagram from README.md lines 21-63, including all Core Module services (AuthService, StorageService, NotificationService, AuthGuard, AuthInterceptor), all Shared Module components (Header, Sidebar, StatCard, DateRangePicker, Models, TruncatePipe), and all Feature Modules (Dashboard, Products, Orders, Customers, Auth). AuthGuard should be shown protecting all four feature modules (Dashboard, Products, Orders, Customers), not just DashboardModule.",
           "author": null
         }
       ]
