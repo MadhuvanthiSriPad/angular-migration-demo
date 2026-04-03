@@ -99,9 +99,6 @@ src/app/
 
 ## Local Development
 
-```bash
-npm install
-npm start          # http://localhost:4200
-```
+### Dashboard
 
 Login with `admin@retailconnect.io` / `admin123`

@@ -1,13 +1,13 @@
 {
   "repo_notes": [
     {
-      "content": ""
+      "content": "This is a RetailConnect store management portal application. It is not primarily a migration demo — do not describe its purpose as facilitating a migration to Angular 18. The app manages products, orders, and customers for retail environments."
     }
   ],
   "pages": [
     {
       "title": "RetailConnect — Project Overview",
-      "purpose": "High-level introduction to the RetailConnect Angular 14 store management portal: what it does, its tech stack, how to run it locally. Links to child pages for architecture and setup details.",
+      "purpose": "Project overview covering exactly four things: (1) tech stack table (Angular 14, Angular Material, RxJS, TypeScript, Node 16, Karma/Jasmine, Webpack); (2) key functional areas — Dashboard, Products, Orders, Customers; (3) folder structure under src/app/; (4) high-level architecture diagram. Nothing else.",
       "page_notes": [
         {
           "content": ""
@@ -17,16 +17,6 @@
     {
       "title": "Getting Started",
       "purpose": "Step-by-step guide for setting up the development environment: Node.js version requirement (.nvmrc), npm install, npm start, and login credentials. Covers environment configuration files and the Angular CLI build pipeline.",
-      "parent": "RetailConnect — Project Overview",
-      "page_notes": [
-        {
-          "content": ""
-        }
-      ]
-    },
-    {
-      "title": "Angular 14 → 18 Migration Targets",
-      "purpose": "Documents all intentional Angular 14 patterns that are migration targets for Angular 18: NgModule→Standalone, *ngIf/*ngFor→@if/@for, class-based guards→functional guards, class-based interceptors→withInterceptors(), BehaviorSubject→Signals, deprecated RxJS operators (pluck, toPromise), Webpack→esbuild, and Karma/Jasmine→Jest. Includes code pointers for each pattern.",
       "parent": "RetailConnect — Project Overview",
       "page_notes": [
         {
