@@ -1,13 +1,8 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
   moduleNameMapper: {
     '@app/(.*)': '<rootDir>/src/app/$1',
-  },
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
   },
 };
 

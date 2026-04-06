@@ -1,7 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable, of, throwError } from 'rxjs';
-import { delay, map, tap } from 'rxjs/operators';
+import { delay, map, startWith, tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 
 export interface AuthUser {
@@ -31,11 +31,12 @@ export class AuthService {
   private readonly TOKEN_KEY = 'rc_auth_token';
   private readonly USER_KEY = 'rc_auth_user';
 
-  currentUser = signal<AuthUser | null>(
+  private _currentUser = signal<AuthUser | null>(
     this.storage.get<AuthUser>(this.USER_KEY)
   );
+  currentUser = this._currentUser.asReadonly();
 
-  currentUser$ = toObservable(this.currentUser);
+  currentUser$ = toObservable(this.currentUser).pipe(startWith(this.currentUser()));
 
   constructor(private storage: StorageService) {}
 
@@ -56,7 +57,7 @@ export class AuthService {
         const token = btoa(`${user.id}:${Date.now()}`);
         this.storage.set(this.TOKEN_KEY, token);
         this.storage.set(this.USER_KEY, user);
-        this.currentUser.set(user);
+        this._currentUser.set(user);
       })
     );
   }
@@ -64,7 +65,7 @@ export class AuthService {
   logout(): void {
     this.storage.remove(this.TOKEN_KEY);
     this.storage.remove(this.USER_KEY);
-    this.currentUser.set(null);
+    this._currentUser.set(null);
   }
 
   getToken(): string | null {

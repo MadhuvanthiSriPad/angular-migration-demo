@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { lastValueFrom, Observable, of } from 'rxjs';
-import { delay, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { delay, filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
 import { StorageService } from '../../../core/services/storage.service';
 import { MOCK_ORDERS } from './order.mock';
@@ -12,8 +12,9 @@ import { MOCK_ORDERS } from './order.mock';
 export class OrderService {
   private readonly STORAGE_KEY = 'rc_orders';
 
-  orders = signal<Order[]>(this.loadFromStorage());
-  orders$ = toObservable(this.orders);
+  private _orders = signal<Order[]>(this.loadFromStorage());
+  orders = this._orders.asReadonly();
+  orders$ = toObservable(this.orders).pipe(startWith(this.orders()));
 
   constructor(private storage: StorageService) {}
 
@@ -34,7 +35,7 @@ export class OrderService {
   }
 
   updateStatus(id: string, status: OrderStatus): Observable<Order> {
-    const current = this.orders();
+    const current = this._orders();
     const index = current.findIndex(o => o.id === id);
     if (index === -1) throw new Error(`Order ${id} not found`);
 
@@ -50,7 +51,7 @@ export class OrderService {
         const list = [...current];
         list[index] = o;
         this.saveToStorage(list);
-        this.orders.set(list);
+        this._orders.set(list);
       })
     );
   }
