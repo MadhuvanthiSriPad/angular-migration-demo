@@ -14,7 +14,10 @@ export class ProductService {
 
   private _products = signal<Product[]>(this.loadFromStorage());
   products = this._products.asReadonly();
-  products$ = toObservable(this.products).pipe(startWith(this.products()));
+  private _products$ = toObservable(this.products);
+  get products$(): Observable<Product[]> {
+    return this._products$.pipe(startWith(this.products()));
+  }
 
   constructor(private storage: StorageService) {}
 

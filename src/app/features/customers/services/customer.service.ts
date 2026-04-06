@@ -14,7 +14,10 @@ export class CustomerService {
 
   private _customers = signal<Customer[]>(this.loadFromStorage());
   customers = this._customers.asReadonly();
-  customers$ = toObservable(this.customers).pipe(startWith(this.customers()));
+  private _customers$ = toObservable(this.customers);
+  get customers$(): Observable<Customer[]> {
+    return this._customers$.pipe(startWith(this.customers()));
+  }
 
   constructor(private storage: StorageService) {}
 

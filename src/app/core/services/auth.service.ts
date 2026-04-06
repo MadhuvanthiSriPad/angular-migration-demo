@@ -36,7 +36,10 @@ export class AuthService {
   );
   currentUser = this._currentUser.asReadonly();
 
-  currentUser$ = toObservable(this.currentUser).pipe(startWith(this.currentUser()));
+  private _currentUser$ = toObservable(this.currentUser);
+  get currentUser$(): Observable<AuthUser | null> {
+    return this._currentUser$.pipe(startWith(this.currentUser()));
+  }
 
   constructor(private storage: StorageService) {}
 

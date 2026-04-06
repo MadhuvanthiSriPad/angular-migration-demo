@@ -14,7 +14,10 @@ export class OrderService {
 
   private _orders = signal<Order[]>(this.loadFromStorage());
   orders = this._orders.asReadonly();
-  orders$ = toObservable(this.orders).pipe(startWith(this.orders()));
+  private _orders$ = toObservable(this.orders);
+  get orders$(): Observable<Order[]> {
+    return this._orders$.pipe(startWith(this.orders()));
+  }
 
   constructor(private storage: StorageService) {}
 
