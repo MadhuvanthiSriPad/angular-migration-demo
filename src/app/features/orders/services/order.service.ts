@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { lastValueFrom, Observable, of } from 'rxjs';
-import { delay, filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
 import { StorageService } from '../../../core/services/storage.service';
 import { MOCK_ORDERS } from './order.mock';
@@ -16,7 +16,7 @@ export class OrderService {
   orders = this._orders.asReadonly();
   private _orders$ = toObservable(this.orders);
   get orders$(): Observable<Order[]> {
-    return this._orders$.pipe(startWith(this.orders()));
+    return this._orders$.pipe(startWith(this.orders()), distinctUntilChanged());
   }
 
   constructor(private storage: StorageService) {}

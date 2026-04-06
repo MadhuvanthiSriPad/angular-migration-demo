@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable, of } from 'rxjs';
-import { delay, map, startWith, tap } from 'rxjs/operators';
+import { delay, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 import { Product, ProductFilter } from '../../../shared/models/product.model';
 import { StorageService } from '../../../core/services/storage.service';
 import { MOCK_PRODUCTS } from './product.mock';
@@ -16,7 +16,7 @@ export class ProductService {
   products = this._products.asReadonly();
   private _products$ = toObservable(this.products);
   get products$(): Observable<Product[]> {
-    return this._products$.pipe(startWith(this.products()));
+    return this._products$.pipe(startWith(this.products()), distinctUntilChanged());
   }
 
   constructor(private storage: StorageService) {}

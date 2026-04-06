@@ -1,7 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable, of, throwError } from 'rxjs';
-import { delay, map, startWith, tap } from 'rxjs/operators';
+import { delay, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 
 export interface AuthUser {
@@ -38,7 +38,7 @@ export class AuthService {
 
   private _currentUser$ = toObservable(this.currentUser);
   get currentUser$(): Observable<AuthUser | null> {
-    return this._currentUser$.pipe(startWith(this.currentUser()));
+    return this._currentUser$.pipe(startWith(this.currentUser()), distinctUntilChanged());
   }
 
   constructor(private storage: StorageService) {}

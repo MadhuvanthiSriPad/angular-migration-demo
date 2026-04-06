@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { Customer } from '../../../shared/models/customer.model';
 import { StorageService } from '../../../core/services/storage.service';
 import { MOCK_CUSTOMERS } from './customer.mock';
@@ -16,7 +16,7 @@ export class CustomerService {
   customers = this._customers.asReadonly();
   private _customers$ = toObservable(this.customers);
   get customers$(): Observable<Customer[]> {
-    return this._customers$.pipe(startWith(this.customers()));
+    return this._customers$.pipe(startWith(this.customers()), distinctUntilChanged());
   }
 
   constructor(private storage: StorageService) {}
