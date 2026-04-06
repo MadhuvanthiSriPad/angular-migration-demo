@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { delay, filter, map, switchMap, tap } from 'rxjs/operators';
+import { Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { lastValueFrom, Observable, of } from 'rxjs';
+import { delay, distinctUntilChanged, filter, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
 import { StorageService } from '../../../core/services/storage.service';
 import { MOCK_ORDERS } from './order.mock';
@@ -11,8 +12,12 @@ import { MOCK_ORDERS } from './order.mock';
 export class OrderService {
   private readonly STORAGE_KEY = 'rc_orders';
 
-  private ordersSubject = new BehaviorSubject<Order[]>(this.loadFromStorage());
-  orders$: Observable<Order[]> = this.ordersSubject.asObservable();
+  private _orders = signal<Order[]>(this.loadFromStorage());
+  orders = this._orders.asReadonly();
+  private _orders$ = toObservable(this.orders);
+  get orders$(): Observable<Order[]> {
+    return this._orders$.pipe(startWith(this.orders()), distinctUntilChanged());
+  }
 
   constructor(private storage: StorageService) {}
 
@@ -33,7 +38,7 @@ export class OrderService {
   }
 
   updateStatus(id: string, status: OrderStatus): Observable<Order> {
-    const current = this.ordersSubject.value;
+    const current = this._orders();
     const index = current.findIndex(o => o.id === id);
     if (index === -1) throw new Error(`Order ${id} not found`);
 
@@ -49,7 +54,7 @@ export class OrderService {
         const list = [...current];
         list[index] = o;
         this.saveToStorage(list);
-        this.ordersSubject.next(list);
+        this._orders.set(list);
       })
     );
   }
@@ -74,15 +79,6 @@ export class OrderService {
     );
   }
 
-  /**
-   * Returns the most recent order for a given customer.
-   *
-   * MIGRATION NOTE — switchMap chain:
-   *   This pattern (getAll → filter → switchMap → map) is correct in RxJS 7
-   *   but the inner observable should be replaced with a dedicated query in v18
-   *   to avoid re-subscribing on every emission of orders$.
-   *   Devin fix: extract to a combineLatest + filter pattern.
-   */
   getLatestOrderForCustomer(customerId: string): Observable<Order | undefined> {
     return this.getAll().pipe(
       map(orders => orders.filter(o => o.customerId === customerId)),
@@ -96,16 +92,8 @@ export class OrderService {
     );
   }
 
-  /**
-   * Resolves the first pending order as a Promise for legacy callback consumers.
-   *
-   * MIGRATION NOTE — deprecated operator:
-   *   Observable.toPromise() was deprecated in RxJS 7 and removed in RxJS 8.
-   *   Devin fix: replace with lastValueFrom(this.getByStatus('pending').pipe(take(1)))
-   *   imported from 'rxjs'.
-   */
-  getFirstPendingOrderAsPromise(): Promise<Order[] | undefined> {
-    return this.getByStatus('pending').toPromise();
+  getFirstPendingOrderAsPromise(): Promise<Order[]> {
+    return lastValueFrom(this.getByStatus('pending').pipe(take(1)));
   }
 
   private loadFromStorage(): Order[] {

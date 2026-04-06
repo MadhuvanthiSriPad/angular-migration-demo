@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { Customer } from '../../../shared/models/customer.model';
 import { StorageService } from '../../../core/services/storage.service';
 import { MOCK_CUSTOMERS } from './customer.mock';
@@ -11,8 +12,12 @@ import { MOCK_CUSTOMERS } from './customer.mock';
 export class CustomerService {
   private readonly STORAGE_KEY = 'rc_customers';
 
-  private customersSubject = new BehaviorSubject<Customer[]>(this.loadFromStorage());
-  customers$: Observable<Customer[]> = this.customersSubject.asObservable();
+  private _customers = signal<Customer[]>(this.loadFromStorage());
+  customers = this._customers.asReadonly();
+  private _customers$ = toObservable(this.customers);
+  get customers$(): Observable<Customer[]> {
+    return this._customers$.pipe(startWith(this.customers()), distinctUntilChanged());
+  }
 
   constructor(private storage: StorageService) {}
 

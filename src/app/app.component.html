@@ -1,21 +1,13 @@
-<ng-container *ngIf="authService.isLoggedIn; else loginView">
+@if (authService.isLoggedIn) {
   <app-header (sidenavToggle)="toggleSidenav()"></app-header>
-
   <mat-sidenav-container class="app-sidenav-container">
-    <mat-sidenav
-      #sidenav
-      [opened]="sidenavOpened"
-      mode="side"
-      class="app-sidenav">
+    <mat-sidenav #sidenav [opened]="sidenavOpened" mode="side" class="app-sidenav">
       <app-sidebar></app-sidebar>
     </mat-sidenav>
-
     <mat-sidenav-content class="app-content">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
-</ng-container>
-
-<ng-template #loginView>
+} @else {
   <router-outlet></router-outlet>
-</ng-template>
+}

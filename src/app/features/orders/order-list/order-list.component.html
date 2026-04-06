@@ -10,19 +10,20 @@
   </div>
 
   <!-- Status filter chips -->
-  <mat-chip-list class="status-chips" aria-label="Filter by status">
+  <mat-chip-set class="status-chips" aria-label="Filter by status">
     <mat-chip
       [class.chip-selected]="selectedStatus === ''"
       (click)="onStatusFilter('')">
       All
     </mat-chip>
-    <mat-chip
-      *ngFor="let s of statuses"
-      [class.chip-selected]="selectedStatus === s"
-      (click)="onStatusFilter(s)">
-      {{ s | titlecase }}
-    </mat-chip>
-  </mat-chip-list>
+    @for (s of statuses; track s) {
+      <mat-chip
+        [class.chip-selected]="selectedStatus === s"
+        (click)="onStatusFilter(s)">
+        {{ s | titlecase }}
+      </mat-chip>
+    }
+  </mat-chip-set>
 
   <mat-card>
     <mat-card-content>

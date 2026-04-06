@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { delay, pluck, tap } from 'rxjs/operators';
+import { Injectable, signal, computed } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable, of, throwError } from 'rxjs';
+import { delay, distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 
 export interface AuthUser {
@@ -30,20 +31,20 @@ export class AuthService {
   private readonly TOKEN_KEY = 'rc_auth_token';
   private readonly USER_KEY = 'rc_auth_user';
 
-  private currentUserSubject = new BehaviorSubject<AuthUser | null>(
+  private _currentUser = signal<AuthUser | null>(
     this.storage.get<AuthUser>(this.USER_KEY)
   );
+  currentUser = this._currentUser.asReadonly();
 
-  currentUser$: Observable<AuthUser | null> = this.currentUserSubject.asObservable();
+  private _currentUser$ = toObservable(this.currentUser);
+  get currentUser$(): Observable<AuthUser | null> {
+    return this._currentUser$.pipe(startWith(this.currentUser()), distinctUntilChanged());
+  }
 
   constructor(private storage: StorageService) {}
 
   get isLoggedIn(): boolean {
-    return this.currentUserSubject.value !== null;
-  }
-
-  get currentUser(): AuthUser | null {
-    return this.currentUserSubject.value;
+    return this.currentUser() !== null;
   }
 
   login(email: string, password: string): Observable<AuthUser> {
@@ -59,7 +60,7 @@ export class AuthService {
         const token = btoa(`${user.id}:${Date.now()}`);
         this.storage.set(this.TOKEN_KEY, token);
         this.storage.set(this.USER_KEY, user);
-        this.currentUserSubject.next(user);
+        this._currentUser.set(user);
       })
     );
   }
@@ -67,22 +68,14 @@ export class AuthService {
   logout(): void {
     this.storage.remove(this.TOKEN_KEY);
     this.storage.remove(this.USER_KEY);
-    this.currentUserSubject.next(null);
+    this._currentUser.set(null);
   }
 
   getToken(): string | null {
     return this.storage.get<string>(this.TOKEN_KEY);
   }
 
-  /**
-   * Returns an observable of the current user's role.
-   *
-   * MIGRATION NOTE — deprecated RxJS operator:
-   *   `pluck` was deprecated in RxJS 7.4 and removed in RxJS 8.
-   *   Devin migration fix: replace with map(user => user?.role)
-   */
   getCurrentUserRole(): Observable<string | undefined> {
-    // @ts-ignore — pluck is deprecated; intentional for migration demo
-    return this.currentUser$.pipe(pluck('role'));
+    return this.currentUser$.pipe(map(user => user?.role));
   }
 }

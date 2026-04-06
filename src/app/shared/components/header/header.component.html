@@ -7,15 +7,15 @@
 
   <span class="spacer"></span>
 
-  <ng-container *ngIf="currentUser; else guestTpl">
-    <span class="user-name">{{ currentUser.name }}</span>
+  @if (authService.currentUser()) {
+    <span class="user-name">{{ authService.currentUser()!.name }}</span>
     <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item disabled>
         <mat-icon>badge</mat-icon>
-        <span>{{ currentUser.role | titlecase }}</span>
+        <span>{{ authService.currentUser()!.role | titlecase }}</span>
       </button>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="onLogout()">
@@ -23,9 +23,7 @@
         <span>Sign out</span>
       </button>
     </mat-menu>
-  </ng-container>
-
-  <ng-template #guestTpl>
+  } @else {
     <button mat-button routerLink="/login">Sign in</button>
-  </ng-template>
+  }
 </mat-toolbar>
